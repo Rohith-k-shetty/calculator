@@ -16,6 +16,7 @@ const buttonValues = [
 const App = () => {
   const [calc, setCalc] = useState({ num: "", res: "", sign: "" });
 
+  //when the sign is clicked to operate with that
   const signClick = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
@@ -38,6 +39,7 @@ const App = () => {
     }
   };
 
+  //to show the result when equal sign is clicked
   const resultClick = (e) => {
     if (calc.sign && calc.num) {
       if (calc.sign !== "^") {
@@ -67,6 +69,7 @@ const App = () => {
     }
   };
 
+  //to reset the screen
   const resetClick = (e) => {
     e.preventDefault();
     setCalc({
@@ -76,14 +79,16 @@ const App = () => {
     });
   };
 
+  //to remove a single value from the state
   const backClick = (e) => {
     e.preventDefault();
     setCalc({
       ...calc,
-      num: "",
+      num: calc.num.slice(0, -1),
     });
   };
 
+  //power function is used for modulus operator
   const percentageClick = (e) => {
     e.preventDefault();
     let num = calc.num ? calc.num : 0;
@@ -97,6 +102,8 @@ const App = () => {
     });
   };
 
+  //add dot or fractional value to a number
+
   const dotClick = (e) => {
     e.preventDefault();
     const value = e.target.innerHTML;
@@ -106,9 +113,25 @@ const App = () => {
     });
   };
 
+  //main function ... with front-end design
   return (
     <div className="container">
-      <Screeen value={calc.num ? calc.num : calc.sign} value1={calc.res} />
+      <Screeen
+        value={
+          calc.num
+            ? !(Number(calc.num) % 1 === 0)
+              ? Number(calc.num).toFixed(6)
+              : calc.num
+            : calc.sign
+        }
+        value1={
+          !(Number(calc.res) % 1 === 0)
+            ? Number(calc.res).toFixed(6)
+            : calc.res.toString().slice(0, 10) +
+              calc.res.toString().slice(15, 20)
+        }
+      />
+
       <div className="buttonBox">
         {buttonValues.flat().map((btn, i) => {
           return (
